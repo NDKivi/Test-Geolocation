@@ -16,12 +16,21 @@ $(document).ready(function () {
             $(this).text("Start");
         } else {
             watchObject = navigator.geolocation.watchPosition(function (position) {
-                let newCoordinates = position.coords;
-                if ((newCoordinates.accuracy < 15) && isBeyondMarginOfError(GLOBAL_COORDINATES[GLOBAL_COORDINATES.length - 1], newCoordinates)) {
-                    GLOBAL_COORDINATES.push(newCoordinatesObject);
-                    let currentDistance = metersToMiles(geolib.getPathLength(GLOBAL_COORDINATES)) + accumulatedDistance;
-                    $("#current-distance").text("Tot: " + currentDistance.toFixed(3) + " mi");
-                    $("#last-leg-distance").text(getLastLeg(GLOBAL_COORDINATES));
+                let newCoordinates = {"latitude": position.coords.latitude,
+                                      "longitude": position.coords.longitude,
+                                      "accuracy": position.coords.accuracy
+                }
+                if (newCoordinates.accuracy < 500) {
+                    if (GLOBAL_COORDINATES.length === 0) {
+                        GLOBAL_COORDINATES.push(newCoordinates);
+                    } else {
+                        if (isBeyondMarginOfError(GLOBAL_COORDINATES[GLOBAL_COORDINATES.length - 1], newCoordinates)) {
+                            GLOBAL_COORDINATES.push(newCoordinates);
+                            let currentDistance = metersToMiles(geolib.getPathLength(GLOBAL_COORDINATES)) + accumulatedDistance;
+                            $("#current-distance").text("Tot: " + currentDistance.toFixed(3) + " mi");
+                            $("#last-leg-distance").text(getLastLeg(GLOBAL_COORDINATES));
+                        }
+                    }
                 }
 
                 let newDiv = $(
@@ -42,11 +51,12 @@ $(document).ready(function () {
 
 /* @returns boolean */
 function isBeyondMarginOfError(startingCoordinates, endingCoordinates) {
-    if (!startingCoordinates)
-        return true;
-    let distance = geolib.getDistance(startingCoordinates, endingCoordinates);
-    let accuracy = 2 * startingCoordinates.accuracy + 2 * endingCoordinates.accuracy;
-    return (distance > accuracy);
+    return true;
+    // if (!startingCoordinates)
+    //     return true;
+    // let distance = geolib.getDistance(startingCoordinates, endingCoordinates);
+    // let accuracy = 2 * startingCoordinates.accuracy + 2 * endingCoordinates.accuracy;
+    // return (distance > accuracy);
 }
 
 /* @returns string */
