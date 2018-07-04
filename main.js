@@ -20,7 +20,7 @@ $(document).ready(function () {
                                       "longitude": position.coords.longitude,
                                       "accuracy": position.coords.accuracy
                 }
-                if (newCoordinates.accuracy < 500) {
+                if (newCoordinates.accuracy < 25) {
                     if (GLOBAL_COORDINATES.length === 0) {
                         GLOBAL_COORDINATES.push(newCoordinates);
                     } else {
@@ -51,12 +51,11 @@ $(document).ready(function () {
 
 /* @returns boolean */
 function isBeyondMarginOfError(startingCoordinates, endingCoordinates) {
-    return true;
-    // if (!startingCoordinates)
-    //     return true;
-    // let distance = geolib.getDistance(startingCoordinates, endingCoordinates);
-    // let accuracy = 2 * startingCoordinates.accuracy + 2 * endingCoordinates.accuracy;
-    // return (distance > accuracy);
+    if (!startingCoordinates)
+        return true;
+    let distance = geolib.getDistance(startingCoordinates, endingCoordinates);
+    let accuracy = 2 * startingCoordinates.accuracy + 2 * endingCoordinates.accuracy;
+    return (distance > accuracy);
 }
 
 /* @returns string */
