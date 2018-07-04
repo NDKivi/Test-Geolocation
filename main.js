@@ -51,11 +51,11 @@ $(document).ready(function () {
 
 /* @returns boolean */
 function isBeyondMarginOfError(startingCoordinates, endingCoordinates) {
-    if (!startingCoordinates)
-        return true;
+    // if (!startingCoordinates)
+    //     return true;
     let distance = geolib.getDistance(startingCoordinates, endingCoordinates);
     let accuracy = 2 * startingCoordinates.accuracy + 2 * endingCoordinates.accuracy;
-    return (distance > accuracy);
+    return ((distance > 5) && (distance > accuracy));
 }
 
 /* @returns string */
