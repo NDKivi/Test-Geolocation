@@ -54,7 +54,7 @@ function isBeyondMarginOfError(startingCoordinates, endingCoordinates) {
     // if (!startingCoordinates)
     //     return true;
     let distance = geolib.getDistance(startingCoordinates, endingCoordinates);
-    let accuracy = 1.618 * (startingCoordinates.accuracy + endingCoordinates.accuracy);
+    let accuracy = 0.618 * (startingCoordinates.accuracy + endingCoordinates.accuracy);
     return ((distance > 5) && (distance > accuracy));
 }
 
